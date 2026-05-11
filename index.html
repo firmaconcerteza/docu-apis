@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API Chashin — Documentación | Firma Con Certeza</title>
+<title>API cashin — Documentación | Firma Con Certeza</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -358,7 +358,7 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-tag">API Chashin</div>
+  <div class="hero-tag">API cashin</div>
   <h1>Documentación de la API</h1>
   <p>Búsqueda y consulta de personas naturales y jurídicas en Guatemala mediante millones de registros públicos.</p>
   <div class="hero-meta">
@@ -406,12 +406,12 @@
           </div>
           <div>
             <h3>Token de acceso</h3>
-            <p><span class="inline-code" style="background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.3);color:#1e40af">chashin_*****</span></p>
+            <p><span class="inline-code" style="background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.3);color:#1e40af">cashin_*****</span></p>
           </div>
         </div>
         <div class="code-block">
           <div class="code-header"><span class="code-lang">HTTP Header</span></div>
-          <pre>Authorization: chashin_******</pre>
+          <pre>Authorization: cashin_******</pre>
         </div>
       </section>
 
@@ -434,7 +434,7 @@
         <div class="endpoint-card">
           <div class="endpoint-header">
             <span class="method-badge">POST</span>
-            <span class="endpoint-path">/chashin/busqueda/1</span>
+            <span class="endpoint-path">/cashin/busqueda/1</span>
           </div>
           <div class="endpoint-body">
             <h3>Parámetros del body</h3>
@@ -458,9 +458,9 @@
             <div id="tab-b1" class="tab-panel active">
               <div class="code-block">
                 <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-                <pre><span class="token-method">curl</span> -X POST <span class="token-str">"https://ext.firmaconcerteza.com/chashin/busqueda/1"</span> \
+                <pre><span class="token-method">curl</span> -X POST <span class="token-str">"https://ext.firmaconcerteza.com/cashin/busqueda/1"</span> \
   -H <span class="token-str">"Content-Type: application/json"</span> \
-  -H <span class="token-str">"Authorization: chashin_*****"</span> \
+  -H <span class="token-str">"Authorization: cashin_*****"</span> \
   -d <span class="token-str">'{
     "query": "jorge raul",
     "tipoBusqueda": "normal",
@@ -473,11 +473,11 @@
             <div id="tab-b2" class="tab-panel">
               <div class="code-block">
                 <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-                <pre><span class="token-key">const</span> response = <span class="token-key">await</span> fetch(<span class="token-str">'https://ext.firmaconcerteza.com/chashin/busqueda/1'</span>, {
+                <pre><span class="token-key">const</span> response = <span class="token-key">await</span> fetch(<span class="token-str">'https://ext.firmaconcerteza.com/cashin/busqueda/1'</span>, {
   method: <span class="token-str">'POST'</span>,
   headers: {
     <span class="token-str">'Content-Type'</span>: <span class="token-str">'application/json'</span>,
-    <span class="token-str">'Authorization'</span>: <span class="token-str">'chashin_****'</span>
+    <span class="token-str">'Authorization'</span>: <span class="token-str">'cashin_****'</span>
   },
   body: JSON.stringify({
     query: <span class="token-str">'jorge raul'</span>,
@@ -528,7 +528,7 @@ console.log(data);</pre>
         <div class="endpoint-card">
           <div class="endpoint-header">
             <span class="method-badge">POST</span>
-            <span class="endpoint-path">/chashin/entidad/1</span>
+            <span class="endpoint-path">/cashin/entidad/1</span>
           </div>
           <div class="endpoint-body">
             <h3>Parámetros del body</h3>
@@ -565,20 +565,20 @@ console.log(data);</pre>
             <div id="tab-e1" class="tab-panel active">
               <div class="code-block">
                 <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-                <pre><span class="token-method">curl</span> -X POST <span class="token-str">"https://ext.firmaconcerteza.com/chashin/entidad/1"</span> \
+                <pre><span class="token-method">curl</span> -X POST <span class="token-str">"https://ext.firmaconcerteza.com/cashin/entidad/1"</span> \
   -H <span class="token-str">"Content-Type: application/json"</span> \
-  -H <span class="token-str">"Authorization: chashin_****"</span> \
+  -H <span class="token-str">"Authorization: cashin_****"</span> \
   -d <span class="token-str">'{"id": "14584ece-d734-531f-942a-1ab927563669"}'</span></pre>
               </div>
             </div>
             <div id="tab-e2" class="tab-panel">
               <div class="code-block">
                 <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-                <pre><span class="token-key">const</span> response = <span class="token-key">await</span> fetch(<span class="token-str">'https://ext.firmaconcerteza.com/chashin/entidad/1'</span>, {
+                <pre><span class="token-key">const</span> response = <span class="token-key">await</span> fetch(<span class="token-str">'https://ext.firmaconcerteza.com/cashin/entidad/1'</span>, {
   method: <span class="token-str">'POST'</span>,
   headers: {
     <span class="token-str">'Content-Type'</span>: <span class="token-str">'application/json'</span>,
-    <span class="token-str">'Authorization'</span>: <span class="token-str">'chashin_****'</span>
+    <span class="token-str">'Authorization'</span>: <span class="token-str">'cashin_****'</span>
   },
   body: JSON.stringify({ id: <span class="token-str">'14584ece-d734-531f-942a-1ab927563669'</span> })
 });
@@ -856,7 +856,7 @@ data.datos.atributos.forEach(grupo =&gt; {
           <pre>{
   <span class="token-key">"exito"</span>: <span class="token-bool">false</span>,
   <span class="token-key">"mensaje"</span>: <span class="token-str">"Token inválido"</span>,
-  <span class="token-key">"error"</span>: <span class="token-str">"El token proporcionado no es válido para Chashin"</span>
+  <span class="token-key">"error"</span>: <span class="token-str">"El token proporcionado no es válido para cashin"</span>
 }</pre>
         </div>
       </section>
