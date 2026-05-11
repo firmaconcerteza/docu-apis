@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Chashin — Documentación | Firma Con Certeza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-900: #1e3a8a;
+    --blue-800: #1e40af;
+    --blue-700: #1d4ed8;
+    --blue-600: #2563eb;
+    --blue-500: #3b82f6;
+    --blue-400: #60a5fa;
+    --blue-100: #dbeafe;
+    --blue-50:  #eff6ff;
+    --white: #ffffff;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+    --green-500: #22c55e;
+    --green-100: #dcfce7;
+    --green-800: #166534;
+    --red-500: #ef4444;
+    --red-100: #fee2e2;
+    --red-800: #991b1b;
+    --amber-100: #fef3c7;
+    --amber-800: #92400e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--white);
+    color: var(--gray-900);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 1.1rem; color: var(--blue-800);
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 32px; height: 32px; background: var(--blue-600);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-icon svg { width: 18px; height: 18px; fill: white; }
+  .nav-badge {
+    background: var(--blue-50); color: var(--blue-700);
+    border: 1px solid var(--blue-200); border-radius: 20px;
+    font-size: 0.75rem; font-weight: 600; padding: 3px 10px;
+    letter-spacing: 0.03em;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 60%, var(--blue-500) 100%);
+    padding: 72px 2rem 64px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.07) 0%, transparent 40%);
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 4px 14px;
+    color: var(--blue-100); font-size: 0.78rem; font-weight: 500;
+    margin-bottom: 20px; position: relative;
+  }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
+  .hero h1 {
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+    color: white; position: relative;
+    margin-bottom: 16px; line-height: 1.2;
+  }
+  .hero p {
+    color: rgba(255,255,255,0.75); font-size: 1.1rem;
+    max-width: 560px; margin: 0 auto 32px; position: relative;
+  }
+  .hero-meta {
+    display: flex; gap: 32px; justify-content: center;
+    position: relative;
+  }
+  .hero-meta-item {
+    display: flex; flex-direction: column; align-items: center;
+    color: rgba(255,255,255,0.9);
+  }
+  .hero-meta-item strong { font-size: 1.4rem; font-weight: 700; }
+  .hero-meta-item span { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+  .layout { display: grid; grid-template-columns: 240px 1fr; gap: 48px; padding: 48px 0 80px; }
+
+  /* SIDEBAR */
+  .sidebar { position: sticky; top: 80px; height: fit-content; }
+  .sidebar-section { margin-bottom: 28px; }
+  .sidebar-label {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--gray-400);
+    margin-bottom: 8px; padding-left: 8px;
+  }
+  .sidebar a {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 12px; border-radius: 6px;
+    text-decoration: none; color: var(--gray-600);
+    font-size: 0.875rem; font-weight: 400;
+    transition: all 0.15s;
+  }
+  .sidebar a:hover { background: var(--blue-50); color: var(--blue-700); }
+  .sidebar a.active { background: var(--blue-50); color: var(--blue-700); font-weight: 600; }
+  .sidebar a .method-pill {
+    font-size: 0.65rem; font-weight: 700; padding: 1px 6px;
+    border-radius: 4px; background: var(--blue-100); color: var(--blue-700);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* CONTENT */
+  .content { min-width: 0; }
+  section { margin-bottom: 64px; }
+
+  h2 {
+    font-size: 1.6rem; font-weight: 700; color: var(--gray-900);
+    margin-bottom: 8px;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600; color: var(--gray-900);
+    margin-bottom: 16px; padding-top: 8px;
+  }
+  p { color: var(--gray-600); margin-bottom: 16px; font-size: 0.95rem; }
+
+  .section-divider {
+    height: 1px; background: var(--gray-200); margin-bottom: 28px;
+  }
+
+  /* AUTH CARD */
+  .auth-card {
+    background: var(--blue-50); border: 1px solid var(--blue-200);
+    border-radius: 12px; padding: 20px 24px;
+    display: flex; align-items: flex-start; gap: 16px;
+    margin-bottom: 24px;
+  }
+  .auth-icon {
+    width: 40px; height: 40px; background: var(--blue-600);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .auth-icon svg { width: 20px; height: 20px; fill: white; }
+  .auth-card h3 { margin: 0 0 4px; font-size: 0.95rem; color: var(--blue-800); }
+  .auth-card p { margin: 0; font-size: 0.875rem; color: var(--blue-700); }
+
+  /* CODE */
+  pre, code {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .code-block {
+    background: var(--gray-900); border-radius: 10px;
+    overflow: hidden; margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .code-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .code-lang {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--blue-400);
+  }
+  .copy-btn {
+    background: none; border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.5); border-radius: 5px;
+    padding: 3px 10px; font-size: 0.72rem; cursor: pointer;
+    font-family: 'Sora', sans-serif; transition: all 0.15s;
+  }
+  .copy-btn:hover { border-color: rgba(255,255,255,0.4); color: white; }
+  pre {
+    padding: 20px; margin: 0; overflow-x: auto;
+    font-size: 0.82rem; line-height: 1.7;
+    color: #e2e8f0;
+  }
+  .token-key   { color: #93c5fd; }
+  .token-str   { color: #86efac; }
+  .token-num   { color: #fca5a5; }
+  .token-bool  { color: #fbbf24; }
+  .token-null  { color: #94a3b8; }
+  .token-url   { color: #c4b5fd; }
+  .token-method{ color: #f9a8d4; font-weight: 600; }
+  .token-comment{ color: #64748b; font-style: italic; }
+
+  /* ENDPOINT CARD */
+  .endpoint-card {
+    border: 1px solid var(--gray-200); border-radius: 12px;
+    overflow: hidden; margin-bottom: 40px;
+  }
+  .endpoint-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .method-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; font-weight: 700;
+    padding: 4px 10px; border-radius: 6px;
+    background: var(--blue-600); color: white;
+    letter-spacing: 0.03em;
+  }
+  .endpoint-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem; color: var(--gray-700); font-weight: 500;
+  }
+  .endpoint-body { padding: 20px; }
+
+  /* TABLE */
+  .params-table {
+    width: 100%; border-collapse: collapse;
+    margin-bottom: 20px; font-size: 0.875rem;
+  }
+  .params-table th {
+    text-align: left; padding: 10px 14px;
+    background: var(--gray-50); color: var(--gray-600);
+    font-weight: 600; font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .params-table td {
+    padding: 11px 14px; border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-700); vertical-align: top;
+  }
+  .params-table tr:last-child td { border-bottom: none; }
+  .params-table code {
+    background: var(--blue-50); color: var(--blue-700);
+    padding: 2px 7px; border-radius: 4px; font-size: 0.82rem;
+    border: 1px solid var(--blue-100);
+  }
+  .req-badge {
+    display: inline-block; background: #fef3c7; color: #92400e;
+    border-radius: 4px; font-size: 0.7rem; font-weight: 600;
+    padding: 1px 6px;
+  }
+
+  /* RESPONSE CODES */
+  .response-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px; margin-bottom: 24px;
+  }
+  .response-item {
+    border-radius: 8px; padding: 12px 14px;
+    border: 1px solid transparent;
+  }
+  .response-item.ok   { background: var(--green-100); border-color: #bbf7d0; }
+  .response-item.warn { background: var(--amber-100); border-color: #fde68a; }
+  .response-item.err  { background: var(--red-100);   border-color: #fecaca; }
+  .response-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 2px;
+  }
+  .response-item.ok   .response-code { color: var(--green-800); }
+  .response-item.warn .response-code { color: var(--amber-800); }
+  .response-item.err  .response-code { color: var(--red-800); }
+  .response-desc { font-size: 0.8rem; color: var(--gray-600); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+  .tab-btn {
+    background: none; border: 1px solid var(--gray-200);
+    border-radius: 6px; padding: 6px 14px;
+    font-size: 0.82rem; font-weight: 500;
+    cursor: pointer; color: var(--gray-600);
+    font-family: 'Sora', sans-serif; transition: all 0.15s;
+  }
+  .tab-btn.active { background: var(--blue-600); border-color: var(--blue-600); color: white; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* NOTES */
+  .note {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--blue-50); border-left: 3px solid var(--blue-600);
+    border-radius: 0 8px 8px 0; padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+  .note p { margin: 0; font-size: 0.875rem; color: var(--blue-800); }
+
+  /* FOOTER */
+  footer {
+    background: var(--gray-900); color: rgba(255,255,255,0.5);
+    text-align: center; padding: 32px;
+    font-size: 0.85rem;
+  }
+  footer a { color: var(--blue-400); text-decoration: none; }
+
+  /* INLINE CODE */
+  .inline-code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--gray-100); color: var(--gray-700);
+    padding: 1px 6px; border-radius: 4px; font-size: 0.85em;
+  }
+
+  /* BASE URL PILL */
+  .base-url-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--gray-900); border-radius: 8px;
+    padding: 12px 16px; margin-bottom: 28px;
+  }
+  .base-url-label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--gray-400);
+    white-space: nowrap;
+  }
+  .base-url-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem; color: #86efac;
+  }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .hero-meta { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="https://firmaconcerteza.com">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+    </div>
+    Firma Con Certeza
+  </a>
+  <span class="nav-badge">API Docs v1</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">API Chashin</div>
+  <h1>Documentación de la API</h1>
+  <p>Búsqueda y consulta de personas naturales y jurídicas en Guatemala mediante millones de registros públicos.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><strong>2</strong><span>Endpoints</span></div>
+    <div class="hero-meta-item"><strong>REST</strong><span>Protocolo</span></div>
+    <div class="hero-meta-item"><strong>JSON</strong><span>Formato</span></div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="container">
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Introducción</div>
+        <a href="#autenticacion">🔑 Autenticación</a>
+        <a href="#url-base">🌐 URL Base</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Endpoints</div>
+        <a href="#busqueda"><span class="method-pill">POST</span> Búsqueda</a>
+        <a href="#entidad"><span class="method-pill">POST</span> Detalle entidad</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Referencia</div>
+        <a href="#codigos">📋 Códigos de respuesta</a>
+        <a href="#errores">⚠️ Errores</a>
+        <a href="#notas">📌 Notas</a>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- AUTENTICACIÓN -->
+      <section id="autenticacion">
+        <h2>Autenticación</h2>
+        <div class="section-divider"></div>
+        <p>Todos los endpoints requieren un token de autenticación enviado en el header <span class="inline-code">Authorization</span>.</p>
+        <div class="auth-card">
+          <div class="auth-icon">
+            <svg viewBox="0 0 24 24"><path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+          </div>
+          <div>
+            <h3>Token de acceso</h3>
+            <p><span class="inline-code" style="background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.3);color:#1e40af">chashin_7k9mP2xL4nQ8vR5wT3yU6zB1dF0gH9jC</span></p>
+          </div>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">HTTP Header</span></div>
+          <pre>Authorization: chashin_7k9mP2xL4nQ8vR5wT3yU6zB1dF0gH9jC</pre>
+        </div>
+      </section>
+
+      <!-- URL BASE -->
+      <section id="url-base">
+        <h2>URL Base</h2>
+        <div class="section-divider"></div>
+        <div class="base-url-row">
+          <span class="base-url-label">Base URL</span>
+          <span class="base-url-value">https://ext.firmaconcerteza.com</span>
+        </div>
+      </section>
+
+      <!-- BUSQUEDA -->
+      <section id="busqueda">
+        <h2>Búsqueda de entidades</h2>
+        <div class="section-divider"></div>
+        <p>Busca personas naturales o jurídicas en la base de datos mediante texto libre, con modo normal o fuzzy.</p>
+
+        <div class="endpoint-card">
+          <div class="endpoint-header">
+            <span class="method-badge">POST</span>
+            <span class="endpoint-path">/chashin/busqueda/1</span>
+          </div>
+          <div class="endpoint-body">
+            <h3>Parámetros del body</h3>
+            <table class="params-table">
+              <thead><tr><th>Campo</th><th>Tipo</th><th>Req.</th><th>Descripción</th><th>Valores</th></tr></thead>
+              <tbody>
+                <tr><td><code>query</code></td><td>string</td><td><span class="req-badge">Sí</span></td><td>Texto a buscar</td><td>Cualquier texto</td></tr>
+                <tr><td><code>tipo</code></td><td>string</td><td><span class="req-badge">Sí</span></td><td>Tipo de entidad</td><td><code>natural</code> / <code>juridico</code></td></tr>
+                <tr><td><code>tipoBusqueda</code></td><td>string</td><td><span class="req-badge">Sí</span></td><td>Modo de búsqueda</td><td><code>normal</code> / <code>fuzzy</code></td></tr>
+                <tr><td><code>page</code></td><td>number</td><td><span class="req-badge">Sí</span></td><td>Página (desde 1)</td><td>Entero positivo</td></tr>
+                <tr><td><code>size</code></td><td>number</td><td><span class="req-badge">Sí</span></td><td>Resultados por página</td><td>10, 20, 50, 100</td></tr>
+              </tbody>
+            </table>
+
+            <h3>Ejemplos</h3>
+            <div class="tabs">
+              <button class="tab-btn active" onclick="switchTab(this,'tab-b1')">cURL</button>
+              <button class="tab-btn" onclick="switchTab(this,'tab-b2')">JavaScript</button>
+              <button class="tab-btn" onclick="switchTab(this,'tab-b3')">Respuesta</button>
+            </div>
+            <div id="tab-b1" class="tab-panel active">
+              <div class="code-block">
+                <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+                <pre><span class="token-method">curl</span> -X POST <span class="token-str">"https://ext.firmaconcerteza.com/chashin/busqueda/1"</span> \
+  -H <span class="token-str">"Content-Type: application/json"</span> \
+  -H <span class="token-str">"Authorization: chashin_7k9mP2xL4nQ8vR5wT3yU6zB1dF0gH9jC"</span> \
+  -d <span class="token-str">'{
+    "query": "jorge raul",
+    "tipoBusqueda": "normal",
+    "tipo": "natural",
+    "page": 1,
+    "size": 20
+  }'</span></pre>
+              </div>
+            </div>
+            <div id="tab-b2" class="tab-panel">
+              <div class="code-block">
+                <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+                <pre><span class="token-key">const</span> response = <span class="token-key">await</span> fetch(<span class="token-str">'https://ext.firmaconcerteza.com/chashin/busqueda/1'</span>, {
+  method: <span class="token-str">'POST'</span>,
+  headers: {
+    <span class="token-str">'Content-Type'</span>: <span class="token-str">'application/json'</span>,
+    <span class="token-str">'Authorization'</span>: <span class="token-str">'chashin_7k9mP2xL4nQ8vR5wT3yU6zB1dF0gH9jC'</span>
+  },
+  body: JSON.stringify({
+    query: <span class="token-str">'jorge raul'</span>,
+    tipoBusqueda: <span class="token-str">'normal'</span>,
+    tipo: <span class="token-str">'natural'</span>,
+    page: <span class="token-num">1</span>,
+    size: <span class="token-num">20</span>
+  })
+});
+
+<span class="token-key">const</span> data = <span class="token-key">await</span> response.json();
+console.log(data);</pre>
+              </div>
+            </div>
+            <div id="tab-b3" class="tab-panel">
+              <div class="code-block">
+                <div class="code-header"><span class="code-lang">json — 200 OK</span></div>
+                <pre>{
+  <span class="token-key">"exito"</span>: <span class="token-bool">true</span>,
+  <span class="token-key">"mensaje"</span>: <span class="token-str">"Búsqueda exitosa"</span>,
+  <span class="token-key">"datos"</span>: {
+    <span class="token-key">"resultados"</span>: [...],
+    <span class="token-key">"total"</span>: <span class="token-num">150</span>,
+    <span class="token-key">"pagina"</span>: <span class="token-num">1</span>,
+    <span class="token-key">"tamanio"</span>: <span class="token-num">20</span>
+  },
+  <span class="token-key">"metadata"</span>: [
+    { <span class="token-key">"clave"</span>: <span class="token-str">"fuente"</span>, <span class="token-key">"valor"</span>: <span class="token-str">"mongo+elastic"</span> },
+    { <span class="token-key">"clave"</span>: <span class="token-str">"generado_el"</span>, <span class="token-key">"valor"</span>: <span class="token-str">"2026-01-09T10:30:00.000Z"</span> }
+  ]
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENTIDAD -->
+      <section id="entidad">
+        <h2>Detalle de entidad</h2>
+        <div class="section-divider"></div>
+        <p>Obtiene información completa de una entidad específica a partir de su UUID.</p>
+
+        <div class="note" style="border-left-color:#f59e0b;background:#fffbeb;">
+          <p>⚡ <strong>Respuesta dinámica:</strong> Los campos y secciones dentro de <span class="inline-code">atributos</span> varían según la entidad consultada. Cada entidad puede tener distintos títulos, secciones, subsecciones y campos dependiendo de la información disponible en las fuentes. El campo <span class="inline-code">tipo</span> de cada campo puede ser <span class="inline-code">valor</span> (dato simple) o <span class="inline-code">tabla</span> (JSON serializado como string que debe parsearse).</p>
+        </div>
+
+        <div class="endpoint-card">
+          <div class="endpoint-header">
+            <span class="method-badge">POST</span>
+            <span class="endpoint-path">/chashin/entidad/1</span>
+          </div>
+          <div class="endpoint-body">
+            <h3>Parámetros del body</h3>
+            <table class="params-table">
+              <thead><tr><th>Campo</th><th>Tipo</th><th>Req.</th><th>Descripción</th></tr></thead>
+              <tbody>
+                <tr><td><code>id</code></td><td>string</td><td><span class="req-badge">Sí</span></td><td>UUID de la entidad — formato <span class="inline-code">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></td></tr>
+              </tbody>
+            </table>
+
+            <h3>Estructura de la respuesta</h3>
+            <table class="params-table" style="margin-bottom:24px">
+              <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr></thead>
+              <tbody>
+                <tr><td><code>exito</code></td><td>boolean</td><td>Resultado de la operación</td></tr>
+                <tr><td><code>datos._id</code></td><td>string</td><td>UUID de la entidad</td></tr>
+                <tr><td><code>datos.nombre_entidad</code></td><td>string</td><td>Nombre completo normalizado</td></tr>
+                <tr><td><code>datos.tipo_entidad</code></td><td>string</td><td><span class="inline-code">natural</span> o <span class="inline-code">juridico</span></td></tr>
+                <tr><td><code>datos.atributos</code></td><td>array</td><td>Grupos de información — <strong>contenido dinámico</strong></td></tr>
+                <tr><td><code>datos.atributos[].titulo</code></td><td>string</td><td>Nombre del grupo, ej. <span class="inline-code">General (17)</span>, <span class="inline-code">Relaciones (4)</span>, <span class="inline-code">PEP y Sancionados (4)</span></td></tr>
+                <tr><td><code>datos.atributos[].secciones[].campos[].tipo</code></td><td>string</td><td><span class="inline-code">valor</span> — dato simple · <span class="inline-code">tabla</span> — JSON serializado como string, debe parsearse con <span class="inline-code">JSON.parse(campo.valor)</span></td></tr>
+                <tr><td><code>paginacion</code></td><td>object</td><td>Paginación cuando aplica</td></tr>
+                <tr><td><code>seguridad</code></td><td>array</td><td>Nivel de acceso y restricciones</td></tr>
+                <tr><td><code>metadata</code></td><td>array</td><td>Fuente y timestamp de generación</td></tr>
+              </tbody>
+            </table>
+
+            <h3>Ejemplos</h3>
+            <div class="tabs">
+              <button class="tab-btn active" onclick="switchTab(this,'tab-e1')">cURL</button>
+              <button class="tab-btn" onclick="switchTab(this,'tab-e2')">JavaScript</button>
+              <button class="tab-btn" onclick="switchTab(this,'tab-e3')">Respuesta</button>
+            </div>
+            <div id="tab-e1" class="tab-panel active">
+              <div class="code-block">
+                <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+                <pre><span class="token-method">curl</span> -X POST <span class="token-str">"https://ext.firmaconcerteza.com/chashin/entidad/1"</span> \
+  -H <span class="token-str">"Content-Type: application/json"</span> \
+  -H <span class="token-str">"Authorization: chashin_7k9mP2xL4nQ8vR5wT3yU6zB1dF0gH9jC"</span> \
+  -d <span class="token-str">'{"id": "14584ece-d734-531f-942a-1ab927563669"}'</span></pre>
+              </div>
+            </div>
+            <div id="tab-e2" class="tab-panel">
+              <div class="code-block">
+                <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+                <pre><span class="token-key">const</span> response = <span class="token-key">await</span> fetch(<span class="token-str">'https://ext.firmaconcerteza.com/chashin/entidad/1'</span>, {
+  method: <span class="token-str">'POST'</span>,
+  headers: {
+    <span class="token-str">'Content-Type'</span>: <span class="token-str">'application/json'</span>,
+    <span class="token-str">'Authorization'</span>: <span class="token-str">'chashin_7k9mP2xL4nQ8vR5wT3yU6zB1dF0gH9jC'</span>
+  },
+  body: JSON.stringify({ id: <span class="token-str">'14584ece-d734-531f-942a-1ab927563669'</span> })
+});
+<span class="token-key">const</span> data = <span class="token-key">await</span> response.json();
+
+<span class="token-comment">// Los atributos son dinámicos — iterar siempre</span>
+data.datos.atributos.forEach(grupo =&gt; {
+  console.log(grupo.titulo); <span class="token-comment">// "General (17)", "Relaciones (4)", etc.</span>
+  grupo.secciones.forEach(sec =&gt; {
+    sec.subsecciones.forEach(sub =&gt; {
+      sub.campos.forEach(campo =&gt; {
+        <span class="token-key">if</span> (campo.tipo === <span class="token-str">'tabla'</span>) {
+          <span class="token-key">const</span> filas = JSON.parse(campo.valor); <span class="token-comment">// array de objetos</span>
+          console.log(campo.campo, filas);
+        } <span class="token-key">else</span> {
+          console.log(campo.display, campo.valor); <span class="token-comment">// dato simple</span>
+        }
+      });
+    });
+  });
+});</pre>
+              </div>
+            </div>
+            <div id="tab-e3" class="tab-panel">
+              <div class="code-block">
+                <div class="code-header"><span class="code-lang">json — 200 OK (respuesta real completa)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+                <pre>{
+  <span class="token-key">"exito"</span>: <span class="token-bool">true</span>,
+  <span class="token-key">"mensaje"</span>: <span class="token-str">"Detalle encontrado"</span>,
+  <span class="token-key">"error"</span>: <span class="token-null">null</span>,
+  <span class="token-key">"paginacion"</span>: {
+    <span class="token-key">"pagina_actual"</span>: <span class="token-num">1</span>,
+    <span class="token-key">"total_paginas"</span>: <span class="token-num">1</span>
+  },
+  <span class="token-key">"datos"</span>: {
+    <span class="token-key">"_id"</span>: <span class="token-str">"14584ece-d734-531f-942a-1ab927563669"</span>,
+    <span class="token-key">"nombre_entidad"</span>: <span class="token-str">"PORRAS ARGUETA PORRES MARIA CONSUELO"</span>,
+    <span class="token-key">"tipo_entidad"</span>: <span class="token-str">"natural"</span>,
+    <span class="token-key">"atributos"</span>: [
+
+      <span class="token-comment">// ── GRUPO 1: General ─────────────────────────────────────────</span>
+      {
+        <span class="token-key">"titulo"</span>: <span class="token-str">"General (17)"</span>,
+        <span class="token-key">"secciones"</span>: [
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Información general"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">""</span>,
+              <span class="token-key">"campos"</span>: [
+                { <span class="token-key">"campo"</span>: <span class="token-str">"nombre"</span>,           <span class="token-key">"display"</span>: <span class="token-str">"Nombre"</span>,            <span class="token-key">"valor"</span>: <span class="token-str">"PORRAS,ARGUETA,PORRES,MARIA,CONSUELO"</span>, <span class="token-key">"fuente"</span>: <span class="token-str">"gt-guatecompras"</span>,  <span class="token-key">"icono"</span>: <span class="token-str">"user"</span>,        <span class="token-key">"orden"</span>: <span class="token-num">1</span>,   <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                { <span class="token-key">"campo"</span>: <span class="token-str">"cui"</span>,              <span class="token-key">"display"</span>: <span class="token-str">"CUI"</span>,               <span class="token-key">"valor"</span>: <span class="token-str">"2421596050404"</span>,                      <span class="token-key">"fuente"</span>: <span class="token-str">"gt-guatecompras"</span>,  <span class="token-key">"icono"</span>: <span class="token-str">"badge"</span>,       <span class="token-key">"orden"</span>: <span class="token-num">2</span>,   <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                { <span class="token-key">"campo"</span>: <span class="token-str">"nit"</span>,              <span class="token-key">"display"</span>: <span class="token-str">"NIT"</span>,               <span class="token-key">"valor"</span>: <span class="token-str">"1648756"</span>,                            <span class="token-key">"fuente"</span>: <span class="token-str">"gt-guatecompras"</span>,  <span class="token-key">"icono"</span>: <span class="token-str">"hash"</span>,        <span class="token-key">"orden"</span>: <span class="token-num">3</span>,   <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                { <span class="token-key">"campo"</span>: <span class="token-str">"cedula"</span>,           <span class="token-key">"display"</span>: <span class="token-str">"Cedula"</span>,            <span class="token-key">"valor"</span>: <span class="token-str">"C-3 6883"</span>,                           <span class="token-key">"fuente"</span>: <span class="token-str">"gt-rtu-naturales"</span>, <span class="token-key">"icono"</span>: <span class="token-str">"credit-card"</span>, <span class="token-key">"orden"</span>: <span class="token-num">4</span>,   <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                { <span class="token-key">"campo"</span>: <span class="token-str">"fecha_nacimiento"</span>, <span class="token-key">"display"</span>: <span class="token-str">"Fecha Nacimiento"</span>, <span class="token-key">"valor"</span>: <span class="token-str">"1953-08-23T00:00:00.000Z"</span>,              <span class="token-key">"fuente"</span>: <span class="token-str">"gt-rtu-naturales"</span>, <span class="token-key">"icono"</span>: <span class="token-str">"cake"</span>,        <span class="token-key">"orden"</span>: <span class="token-num">5</span>,   <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                { <span class="token-key">"campo"</span>: <span class="token-str">"sexo"</span>,             <span class="token-key">"display"</span>: <span class="token-str">"Sexo"</span>,              <span class="token-key">"valor"</span>: <span class="token-str">"FEMENINO"</span>,                           <span class="token-key">"fuente"</span>: <span class="token-str">"gt-rtu-naturales"</span>, <span class="token-key">"icono"</span>: <span class="token-str">"users"</span>,       <span class="token-key">"orden"</span>: <span class="token-num">8</span>,   <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                { <span class="token-key">"campo"</span>: <span class="token-str">"nacionalidad"</span>,    <span class="token-key">"display"</span>: <span class="token-str">"Nacionalidad"</span>,     <span class="token-key">"valor"</span>: <span class="token-str">"GUATEMALTECO"</span>,                       <span class="token-key">"fuente"</span>: <span class="token-str">"gt-rtu-naturales"</span>, <span class="token-key">"icono"</span>: <span class="token-str">"flag"</span>,        <span class="token-key">"orden"</span>: <span class="token-num">9</span>,   <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                { <span class="token-key">"campo"</span>: <span class="token-str">"estado_civil"</span>,    <span class="token-key">"display"</span>: <span class="token-str">"Estado Civil"</span>,     <span class="token-key">"valor"</span>: <span class="token-str">"CASADA"</span>,                             <span class="token-key">"fuente"</span>: <span class="token-str">"gt-rtu-naturales"</span>, <span class="token-key">"icono"</span>: <span class="token-str">"heart"</span>,       <span class="token-key">"orden"</span>: <span class="token-num">10</span>,  <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                { <span class="token-key">"campo"</span>: <span class="token-str">"edad_calculada"</span>,  <span class="token-key">"display"</span>: <span class="token-str">"Edad Aproximada"</span>,  <span class="token-key">"valor"</span>: <span class="token-str">"72 años"</span>,                            <span class="token-key">"fuente"</span>: <span class="token-str">"gt-rtu-naturales"</span>, <span class="token-key">"icono"</span>: <span class="token-str">"heart"</span>,       <span class="token-key">"orden"</span>: <span class="token-num">998</span>, <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> }
+              ]
+            }]
+          },
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Actividades comerciales"</span>,
+            <span class="token-key">"subsecciones"</span>: [
+              {
+                <span class="token-key">"subseccion"</span>: <span class="token-str">"Nombres comerciales"</span>,
+                <span class="token-key">"campos"</span>: [
+                  { <span class="token-key">"campo"</span>: <span class="token-str">"nombre_comercial"</span>, <span class="token-key">"display"</span>: <span class="token-str">"Nombre Comercial"</span>, <span class="token-key">"valor"</span>: <span class="token-str">"MARIA CONSUELO PORRAS ARGUETA"</span>, <span class="token-key">"fuente"</span>: <span class="token-str">"gt-guatecompras"</span>, <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> }
+                ]
+              },
+              {
+                <span class="token-key">"subseccion"</span>: <span class="token-str">"Activas"</span>,
+                <span class="token-key">"campos"</span>: [
+                  { <span class="token-key">"campo"</span>: <span class="token-str">"sector_economico"</span>, <span class="token-key">"display"</span>: <span class="token-str">"Sector Economico"</span>, <span class="token-key">"valor"</span>: <span class="token-str">"SERVICIOS"</span>, <span class="token-key">"fuente"</span>: <span class="token-str">"gt-rtu-naturales"</span>, <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> },
+                  { <span class="token-key">"campo"</span>: <span class="token-str">"regimen"</span>,          <span class="token-key">"display"</span>: <span class="token-str">"Regimen"</span>,          <span class="token-key">"valor"</span>: <span class="token-str">"GENERAL"</span>,   <span class="token-key">"fuente"</span>: <span class="token-str">"gt-rtu-naturales"</span>, <span class="token-key">"tipo"</span>: <span class="token-str">"valor"</span> }
+                ]
+              }
+            ]
+          },
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Datos electorales"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">"Empadronamiento"</span>,
+              <span class="token-key">"campos"</span>: [{
+                <span class="token-key">"campo"</span>: <span class="token-str">"empadronamiento"</span>,
+                <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,   <span class="token-comment">// ← JSON.parse() requerido</span>
+                <span class="token-key">"fuente"</span>: <span class="token-str">"gt-tse"</span>,
+                <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Año\":\"2023\",\"Departamento\":\"GUATEMALA\",\"Municipio\":\"MIXCO\",\"Centro Votación\":\"ESCUELA OFICIAL URBANA MIXTA NÚMERO 620 LA CEIBA\",\"Dirección\":\"2 CALLE B 2-06 COLONIA MONTE VERDE\",\"Zona\":4},{\"Año\":\"2019\",\"Departamento\":\"GUATEMALA\",\"Municipio\":\"MIXCO\",\"Zona\":\"\"}]"</span>
+              }]
+            }]
+          }
+        ]
+      },
+
+      <span class="token-comment">// ── GRUPO 2: Relaciones ──────────────────────────────────────</span>
+      {
+        <span class="token-key">"titulo"</span>: <span class="token-str">"Relaciones (4)"</span>,
+        <span class="token-key">"secciones"</span>: [
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Organizaciones"</span>,
+            <span class="token-key">"subsecciones"</span>: [
+              {
+                <span class="token-key">"subseccion"</span>: <span class="token-str">"Activas"</span>,
+                <span class="token-key">"campos"</span>: [{
+                  <span class="token-key">"campo"</span>: <span class="token-str">"organizaciones_activas"</span>,
+                  <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                  <span class="token-key">"fuente"</span>: <span class="token-str">"gt-relaciones"</span>,
+                  <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Tipo Relación\":\"Representante\",\"Nombre\":\"COMISION NACIONAL PARA EL SEGUIMIENTO Y APOYO AL FORTALECIMIENTO DE LA JUSTICIA\",\"_id\":\"16f4d489-974b-597b-86bc-197d52e8c032\"},{\"Tipo Relación\":\"Representante\",\"Nombre\":\"MINISTERIO PUBLICO\",\"_id\":\"3dfae8f6-e5f3-552e-894b-439e997d1ef9\"}]"</span>
+                }]
+              },
+              {
+                <span class="token-key">"subseccion"</span>: <span class="token-str">"Inactivas"</span>,
+                <span class="token-key">"campos"</span>: [{
+                  <span class="token-key">"campo"</span>: <span class="token-str">"organizaciones_inactivas"</span>,
+                  <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                  <span class="token-key">"fuente"</span>: <span class="token-str">"gt-relaciones"</span>,
+                  <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Tipo Relación\":\"Representante\",\"Nombre\":\"MINISTERIO PUBLICO DE\",\"_id\":\"8e3db24d-fd2b-5712-9984-d5aa08e08fe2\"}]"</span>
+                }]
+              }
+            ]
+          },
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Colegios profesionales"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">"Colegio de abogados"</span>,
+              <span class="token-key">"campos"</span>: [{
+                <span class="token-key">"campo"</span>: <span class="token-str">"colegio_colegio_abogados"</span>,
+                <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                <span class="token-key">"fuente"</span>: <span class="token-str">"Colegio-abogados"</span>,
+                <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Número Colegiado\":\"3472\",\"Carrera\":\"ABOGADA Y NOTARIA\",\"Teléfono\":\"57150474\",\"Correo\":\"rodriguezdelcid@gmail.com\"}]"</span>
+              }]
+            }]
+          }
+        ]
+      },
+
+      <span class="token-comment">// ── GRUPO 3: Activos ─────────────────────────────────────────</span>
+      {
+        <span class="token-key">"titulo"</span>: <span class="token-str">"Activos"</span>,
+        <span class="token-key">"secciones"</span>: [{
+          <span class="token-key">"seccion"</span>: <span class="token-str">"Propiedades"</span>,
+          <span class="token-key">"subsecciones"</span>: [{ <span class="token-key">"subseccion"</span>: <span class="token-str">"Dicabi"</span>, <span class="token-key">"campos"</span>: [] }]
+        }]
+      },
+
+      <span class="token-comment">// ── GRUPO 4: Estado ──────────────────────────────────────────</span>
+      {
+        <span class="token-key">"titulo"</span>: <span class="token-str">"Estado (37)"</span>,
+        <span class="token-key">"secciones"</span>: [
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Postulaciones"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">"Postulantes"</span>,
+              <span class="token-key">"campos"</span>: [
+                {
+                  <span class="token-key">"campo"</span>: <span class="token-str">"postulantes"</span>,
+                  <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                  <span class="token-key">"fuente"</span>: <span class="token-str">"gt-eventos-postulantes"</span>,
+                  <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Proceso de Postulación\":\"Fiscal General del Ministerio Público\",\"Périodo\":\"2022-2026\",\"Electo / No Electo\":\"Electo\",\"Otros Datos\":\"El 17 de mayo de 2018...\"},{\"Proceso de Postulación\":\"Fiscal General del Ministerio Público\",\"Périodo\":\"2018-2022\",\"Electo / No Electo\":\"Electo\",\"Otros Datos\":\"Magistrada suplente de la CC...\"}]"</span>
+                }
+              ]
+            }]
+          },
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Antejuicios"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">"Antejuicios"</span>,
+              <span class="token-key">"campos"</span>: [{
+                <span class="token-key">"campo"</span>: <span class="token-str">"antejuicios"</span>,
+                <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                <span class="token-key">"fuente"</span>: <span class="token-str">"gt-eventos-antejuicios"</span>,
+                <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Año\":2017,\"Numero\":410,\"Fecha de Admisión\":\"2017-11-30T12:57:00.000Z\",\"Competencia\":\"CONGRESO DE LA REPÚBLICA DE GUATEMALA\",\"fase\":\"RECHAZO IN LIMINE\"}, ... ]"</span>
+              }]
+            }]
+          },
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Trabajador"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">"Trabajador del Estado"</span>,
+              <span class="token-key">"campos"</span>: [{
+                <span class="token-key">"campo"</span>: <span class="token-str">"trabajador_estado"</span>,
+                <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                <span class="token-key">"fuente"</span>: <span class="token-str">"gt-eventos-empleo"</span>,
+                <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Puesto\":\"FISCAL GENERAL DE LA REPUBLICA\",\"Salario Base\":48644.15,\"Renglon\":\"11\",\"Institucion\":\"Ministerio Público\"}]"</span>
+              }]
+            }]
+          },
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"IGSS"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">"Patronos"</span>,
+              <span class="token-key">"campos"</span>: [{
+                <span class="token-key">"campo"</span>: <span class="token-str">"igss_patronos"</span>,
+                <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                <span class="token-key">"fuente"</span>: <span class="token-str">"igss"</span>,
+                <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Número patronal\":\"82047\",\"Dirección\":\"LOTE 170 SEC P COL EL MILAGRO ZONA 6\",\"Actividad económica\":\"INSTRUCCION PUBLICA\"}]"</span>
+              }]
+            }]
+          }
+        ]
+      },
+
+      <span class="token-comment">// ── GRUPO 5: PEP y Sancionados ───────────────────────────────</span>
+      {
+        <span class="token-key">"titulo"</span>: <span class="token-str">"PEP y Sancionados (4)"</span>,
+        <span class="token-key">"secciones"</span>: [
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Personas Expuestas Políticamente"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">"Personas"</span>,
+              <span class="token-key">"campos"</span>: [{
+                <span class="token-key">"campo"</span>: <span class="token-str">"pep_ministerios"</span>,
+                <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                <span class="token-key">"fuente"</span>: <span class="token-str">"gt-ministerios"</span>,
+                <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Lista\":\"Ministerio\",\"Tipo Lista\":\"PEP\",\"Cargo\":\"Fiscal General de la República y Jefe del Ministerio Público\",\"Dependencia\":\"Ministerio Público\"},{\"Lista\":\"Organismo Judicial\",\"Tipo Lista\":\"PEP\",\"Cargo\":\"MAGISTRADO SUPLENTE\",\"Dependencia\":\"SALA DE LA CORTE DE APELACIONES DE LA NIÑEZ Y ADOLESCENCIA\"}]"</span>
+              }]
+            }]
+          },
+          {
+            <span class="token-key">"seccion"</span>: <span class="token-str">"Sanciones Internacionales"</span>,
+            <span class="token-key">"subsecciones"</span>: [{
+              <span class="token-key">"subseccion"</span>: <span class="token-str">"Sanciones"</span>,
+              <span class="token-key">"campos"</span>: [{
+                <span class="token-key">"campo"</span>: <span class="token-str">"sanciones_internacionales"</span>,
+                <span class="token-key">"tipo"</span>: <span class="token-str">"tabla"</span>,
+                <span class="token-key">"fuente"</span>: <span class="token-str">"gt-sanciones"</span>,
+                <span class="token-key">"valor"</span>: <span class="token-str">"[{\"Lista\":\"Lista Engel\",\"Tipo Lista\":\"Sancionados\",\"Origen\":\"Estados Unidos\",\"Descripción\":\"Fiscal general reelecta. Obstruyó las investigaciones de hechos de corrupción...\"},{\"Lista\":\"Consejo de la Unión Europea\",\"Tipo Lista\":\"Sancionados\",\"Origen\":\"Unión Europea\",\"Descripción\":\"Por los persistentes intentos de anular los resultados democráticos...\"}]"</span>
+              }]
+            }]
+          }
+        ]
+      }
+
+    ]
+  },
+  <span class="token-key">"seguridad"</span>: [{ <span class="token-key">"nivel"</span>: <span class="token-str">"publico"</span>, <span class="token-key">"restricciones"</span>: [] }],
+  <span class="token-key">"metadata"</span>: [
+    { <span class="token-key">"clave"</span>: <span class="token-str">"fuente"</span>,        <span class="token-key">"valor"</span>: <span class="token-str">"mongo"</span> },
+    { <span class="token-key">"clave"</span>: <span class="token-str">"generado_el"</span>, <span class="token-key">"valor"</span>: <span class="token-str">"2026-05-11T22:05:29.237Z"</span> }
+  ]
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CÓDIGOS -->
+      <section id="codigos">
+        <h2>Códigos de respuesta</h2>
+        <div class="section-divider"></div>
+        <div class="response-grid">
+          <div class="response-item ok"><div class="response-code">200</div><div class="response-desc">Solicitud exitosa</div></div>
+          <div class="response-item warn"><div class="response-code">400</div><div class="response-desc">Parámetros faltantes o inválidos</div></div>
+          <div class="response-item warn"><div class="response-code">401</div><div class="response-desc">Token no proporcionado</div></div>
+          <div class="response-item err"><div class="response-code">403</div><div class="response-desc">Token inválido</div></div>
+          <div class="response-item err"><div class="response-code">500</div><div class="response-desc">Error interno del servidor</div></div>
+        </div>
+      </section>
+
+      <!-- ERRORES -->
+      <section id="errores">
+        <h2>Ejemplos de errores</h2>
+        <div class="section-divider"></div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">json — 400 parámetro faltante</span></div>
+          <pre>{
+  <span class="token-key">"exito"</span>: <span class="token-bool">false</span>,
+  <span class="token-key">"mensaje"</span>: <span class="token-str">"El campo 'id' es requerido en el body"</span>,
+  <span class="token-key">"error"</span>: <span class="token-str">"Parámetro faltante"</span>
+}</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">json — 403 token inválido</span></div>
+          <pre>{
+  <span class="token-key">"exito"</span>: <span class="token-bool">false</span>,
+  <span class="token-key">"mensaje"</span>: <span class="token-str">"Token inválido"</span>,
+  <span class="token-key">"error"</span>: <span class="token-str">"El token proporcionado no es válido para Chashin"</span>
+}</pre>
+        </div>
+      </section>
+
+      <!-- NOTAS -->
+      <section id="notas">
+        <h2>Notas importantes</h2>
+        <div class="section-divider"></div>
+        <div class="note"><p><strong>Búsqueda normal vs fuzzy:</strong> <span class="inline-code">normal</span> hace coincidencia exacta o parcial. <span class="inline-code">fuzzy</span> tolera errores tipográficos.</p></div>
+        <div class="note"><p><strong>Paginación:</strong> comienza en <span class="inline-code">page: 1</span>. Valores recomendados de <span class="inline-code">size</span>: 10, 20, 50, 100.</p></div>
+        <div class="note"><p><strong>Formato de ID:</strong> los IDs son UUIDs con formato <span class="inline-code">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span>.</p></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <a href="https://firmaconcerteza.com">firmaconcerteza.com</a> — Todos los derechos reservados.</p>
+</footer>
+
+<script>
+function switchTab(btn, panelId) {
+  const tabs = btn.closest('.tabs');
+  const content = tabs.nextElementSibling;
+  tabs.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // find all panels in this endpoint-body
+  const body = tabs.parentElement;
+  body.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.textContent = '¡Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 1800);
+  });
+}
+</script>
+</body>
+</html>
