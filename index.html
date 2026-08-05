@@ -388,6 +388,7 @@
         <div class="sidebar-label">Referencia</div>
         <a href="#codigos">📋 Códigos de respuesta</a>
         <a href="#errores">⚠️ Errores</a>
+        <a href="#tabla-relaciones-familiares">🧬 Tabla relaciones familiares</a>
         <a href="#notas">📌 Notas</a>
       </div>
     </aside>
@@ -858,6 +859,51 @@ data.datos.atributos.forEach(grupo =&gt; {
   <span class="token-key">"mensaje"</span>: <span class="token-str">"Token inválido"</span>,
   <span class="token-key">"error"</span>: <span class="token-str">"El token proporcionado no es válido para cashin"</span>
 }</pre>
+        </div>
+      </section>
+
+      <!-- TABLA RELACIONES FAMILIARES -->
+      <section id="tabla-relaciones-familiares">
+        <h2>Tabla DW: relaciones_familiares</h2>
+        <div class="section-divider"></div>
+        <p>Tabla publicada en PostgreSQL DW para consultar relaciones familiares directas entre entidades.</p>
+        <div class="base-url-row">
+          <span class="base-url-label">Base</span>
+          <span class="base-url-value">firmaconcerteza.public.relaciones_familiares</span>
+        </div>
+        <table class="params-table" style="margin-top:24px">
+          <thead>
+            <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>id_relacion</code></td><td>text</td><td>Identificador único de la relación.</td></tr>
+            <tr><td><code>tipo_relacion</code></td><td>text</td><td>Tipo de vínculo: <code>padre</code>, <code>madre</code> o <code>conyuge</code>.</td></tr>
+            <tr><td><code>nombre_fuente</code></td><td>text</td><td>Fuente de origen. Para esta carga: <code>gt-tabla-familiares</code>.</td></tr>
+            <tr><td><code>fecha_detectada</code></td><td>text</td><td>Fecha de detección o carga de la relación.</td></tr>
+            <tr><td><code>lote</code></td><td>text</td><td>Lote operativo de carga.</td></tr>
+            <tr><td><code>id_entidad_origen</code></td><td>text</td><td>ID de la entidad origen de la relación.</td></tr>
+            <tr><td><code>nombre_origen</code></td><td>text</td><td>Nombre canónico de la entidad origen.</td></tr>
+            <tr><td><code>dpi_origen</code></td><td>text</td><td>DPI/CUI de la entidad origen, cuando existe.</td></tr>
+            <tr><td><code>nit_origen</code></td><td>text</td><td>NIT de la entidad origen, cuando existe.</td></tr>
+            <tr><td><code>id_entidad_destino</code></td><td>text</td><td>ID de la entidad destino de la relación.</td></tr>
+            <tr><td><code>nombre_destino</code></td><td>text</td><td>Nombre canónico de la entidad destino.</td></tr>
+            <tr><td><code>dpi_destino</code></td><td>text</td><td>DPI/CUI de la entidad destino, cuando existe.</td></tr>
+            <tr><td><code>nit_destino</code></td><td>text</td><td>NIT de la entidad destino, cuando existe.</td></tr>
+          </tbody>
+        </table>
+        <div class="note" style="margin-top:24px">
+          <p><strong>Orientación:</strong> en relaciones <code>padre</code> y <code>madre</code>, el origen es el familiar y el destino es el hijo. En <code>conyuge</code>, el origen es la persona consultada y el destino es su cónyuge.</p>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">sql — ejemplo</span></div>
+          <pre>SELECT tipo_relacion, nombre_origen, dpi_origen, nombre_destino, dpi_destino
+FROM public.relaciones_familiares
+WHERE tipo_relacion IN ('padre', 'madre', 'conyuge')
+LIMIT 20;</pre>
+        </div>
+        <div class="base-url-row" style="margin-top:18px">
+          <span class="base-url-label">Vista</span>
+          <span class="base-url-value">firmaconcerteza.public.v_relaciones_familiares</span>
         </div>
       </section>
 
