@@ -125,43 +125,6 @@ No elimina el documento fisicamente. Cambia el estado a:
 inactivo
 ```
 
-## Enviar evento encontrado
-
-Este endpoint lo usan servicios internos cuando detectan algo relacionado con una entidad.
-
-```http
-### Reportar evento encontrado
-POST http://161.35.107.123:3011/api/eventos
-Content-Type: application/json
-x-internal-token: 902ecb99fb30acea7e23c7525fac0a2cdb77201e08211fd3
-
-{
-  "event_id": "evento-juicio-20260927-002",
-  "tipo_evento": "juicio",
-  "id_evento_publico": "juicio-20260927-002",
-  "fuente": "iva-judicial",
-  "fecha_evento": "2026-09-27T18:00:00Z",
-  "entidades": [
-    {
-      "id": "8bc0bd7c-b7f0-586f-8c69-db0bb9c4e900",
-      "rol": "demandado"
-    }
-  ],
-  "metadata": {
-    "numero_expediente": "EXP-2026-002",
-    "juzgado": "Juzgado Civil",
-    "descripcion": "Se registro un juicio relacionado con la entidad monitoreada"
-  }
-}
-```
-
-Reglas importantes:
-
-- `event_id` debe ser unico.
-- Si se manda otra vez el mismo `event_id`, no duplica notificaciones.
-- `entidades` puede traer una o varias entidades.
-- Si una entidad esta monitoreada por varios usuarios, genera una notificacion para cada usuario.
-- Si un usuario monitorea varias entidades del mismo evento, recibe una notificacion por entidad.
 
 ## Consultar notificaciones pendientes
 
